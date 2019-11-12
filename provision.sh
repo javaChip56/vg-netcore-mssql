@@ -21,6 +21,7 @@ update_os()
     apt-get -y install emacs
     apt-get -y install apt-transport-https ca-certificates
     apt-key adv --keyserver  hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    apt-get -y install --install-recommends linux-generic-hwe-18.04
 }
 
 ########################
