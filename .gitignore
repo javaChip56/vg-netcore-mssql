@@ -1,0 +1,21 @@
+# Ignore these folders.
+mysql_data/
+mysql_cnf/
+docker/images/
+*bin/
+*obj/
+.*/
+
+# Ignore these files
+*.log
+**/api/**/healthchecksdb
+**/hcgui/**/healthchecksdb
+
+# Ignore Doc & Excel files
+*.xls
+*.xlsx
+*.doc
+*.docx
+
+!.vscode/
+!/.gitignore
