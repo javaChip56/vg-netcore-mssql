@@ -1,70 +1,36 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "base"
+  config.vm.define "netcoremssql_host" do |netcoremssql_host|
+    netcoremssql_host.vm.box = "ubuntu/bionic64"
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+    ################################################################################################
+    # Port fowarding rules
+    # Change port 1433 to a different port if you already have MySQL running on your host machine as
+    # this is lkely to cause conflicts.
+    ################################################################################################
+    netcoremssql_host.vm.network "forwarded_port", guest: 1433, host: 1444
+    # Client API
+    netcoremssql_host.vm.network "forwarded_port", guest: 8080, host: 8080
+   
+    netcoremssql_host.vm.network "private_network", ip: "192.168.3.34" 
+    netcoremssql_host.vm.network "public_network", use_dhcp_assigned_default_route: true
+    
+    # This current directory will be synced to /mnt/host folder on the guest VM.
+    netcoremssql_host.vm.synced_folder ".", "/mnt/host" 
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+    netcoremssql_host.vm.provider :virtualbox do |vb|
+      vb.name = "netcoremssql_host"
+      vb.memory = "4048"
+      vb.cpus = 2
+    end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    netcoremssql_host.vm.provision "shell", run: "always" do |s|
+      s.path = "provision.sh"
+      # Parameters (VAGRANT_HOST_DIR, BUILD_CLIENT_API)
+      s.args = "/mnt/host/ true"
+    end
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  end
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
-end
+ end
