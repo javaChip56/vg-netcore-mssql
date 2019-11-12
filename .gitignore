@@ -1,6 +1,6 @@
 # Ignore these folders.
-mysql_data/
-mysql_cnf/
+mssql_data/
+mssql_cnf/
 docker/images/
 *bin/
 *obj/
