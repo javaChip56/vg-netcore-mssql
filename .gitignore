@@ -1,4 +1,7 @@
 # Ignore these folders.
+mssql/
+mssql_data/
+mssql_log/
 mssql_data/
 mssql_cnf/
 docker/images/
