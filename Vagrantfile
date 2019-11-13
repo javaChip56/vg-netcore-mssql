@@ -2,7 +2,7 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "netcoremssql_host" do |netcoremssql_host|
-    netcoremssql_host.vm.box = "ubuntu/bionic64"
+    netcoremssql_host.vm.box = "ubuntu/xenial64"
 
     ################################################################################################
     # Port fowarding rules
@@ -14,7 +14,9 @@ Vagrant.configure("2") do |config|
     netcoremssql_host.vm.network "forwarded_port", guest: 8080, host: 8080
    
     netcoremssql_host.vm.network "private_network", ip: "192.168.3.34" 
-    netcoremssql_host.vm.network "public_network", use_dhcp_assigned_default_route: true
+    
+    # Uncomment the line below if the guest OS requires connection to any local / network resource.
+    # netcoremssql_host.vm.network "public_network", use_dhcp_assigned_default_route: true
     
     # This current directory will be synced to /mnt/host folder on the guest VM.
     netcoremssql_host.vm.synced_folder ".", "/mnt/host" 
@@ -28,7 +30,7 @@ Vagrant.configure("2") do |config|
     netcoremssql_host.vm.provision "shell", run: "always" do |s|
       s.path = "provision.sh"
       # Parameters (VAGRANT_HOST_DIR, BUILD_CLIENT_API)
-      s.args = "/mnt/host/ true"
+      s.args = "/mnt/host/ false"
     end
 
   end
