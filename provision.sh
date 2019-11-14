@@ -7,6 +7,44 @@ echo_parameters()
     echo "Parameters received from Vagrantfile: $VAGRANT_HOST_DIR $BUILD_CLIENT_API"  
 }
 
+img_pull_sqlserver()
+{
+    docker rm -f docker-mssql
+    echo "Pulling SQL server 2017 from remote Docker registry."
+    # Pulling the image from remote docker registry may take a while. Wait for this command to finish.
+    docker pull mcr.microsoft.com/mssql/server:2017-latest &
+    wait $!
+    echo "Successfully pulled SQL Server 2017 Docker image."
+}
+
+img_build_sqlserver_nonroot()
+{
+    echo "Building Non-root SQL Server 2017."
+    docker build $VAGRANT_HOST_DIR/docker/sql-nonroot -t sqlserver-2017-nonroot &
+    wait $!
+}
+
+container_run_sqlserver()
+{
+    echo "Running Non-root SQL Server 2017 container."
+    docker run -d -p 1433:1433 -v sqlvolume:/var/opt/mssql -e SA_PASSWORD=D0cker123 -e ACCEPT_EULA=Y --name docker-mssql sqlserver-2017-nonroot &
+    wait $!
+    sudo usermod -aG docker mssql
+}
+
+db_setup()
+{
+    echo "Setting up Client database."
+    # Create Scripts directory inside the container.
+    docker exec docker-mssql /bin/sh -c 'mkdir /opt/mssql-scripts/' &
+    # Copy the DB initialization scripts from host to the container scripts directory.
+    docker cp /mnt/host/db_scripts/db_init.sql docker-mssql:/opt/mssql-scripts/db_init.sql
+    # Run the DB initilization script.
+    docker exec docker-mssql /bin/sh -c '/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "D0cker123" -i /opt/mssql-scripts/db_init.sql' &
+    wait $!
+    echo "Database setup successful!"
+}
+
 reset_database_data()
 {
     rm -rf $VAGRANT_HOST_DIR/mssql_data/
@@ -21,7 +59,6 @@ update_os()
     apt-get -y install emacs
     apt-get -y install apt-transport-https ca-certificates
     apt-key adv --keyserver  hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    apt-get -y install --install-recommends linux-generic-hwe-18.04
 }
 
 ########################
@@ -29,12 +66,12 @@ update_os()
 ########################
 install_docker_engine()
 {
-    echo "deb https://apt.dockerproject.org/repo bionic main" | sudo tee /etc/apt/sources.list.d/docker.list
-    apt-get update
-    apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
-    apt-get update
-    apt-get -y install linux-image-generic-lts-bionic
-    apt-get -y install apache2-utils
+    echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
+    sudo apt-get update
+    sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
+    sudo apt-get update
+    sudo apt-get -y install linux-image-generic-lts-xenial
+    sudo apt-get -y install apache2-utils
     # sudo -- sh -c -e "echo '52.84.227.108   subdomain.domain.com' >> /etc/hosts"
     # apt-get -y install docker-engine
     apt-get -y install docker.io
@@ -45,7 +82,7 @@ install_docker_engine()
     #
     sudo systemctl enable docker
     sudo usermod -aG docker vagrant
-    sudo usermod -aG docker mssql
+    # 
 }
 
 ########################
@@ -60,7 +97,7 @@ install_docker_compose()
 
 init_docker_compose()
 {
-    docker rm -f /docker-mssql
+    docker rm -f docker-mssql
     docker-compose rm -v
     docker-compose -f $VAGRANT_HOST_DIR/docker/compose/docker-compose.yml up -d
 }
@@ -96,15 +133,21 @@ echo "Installing Docker Engine."
 install_docker_engine
 echo "Docker Engine successfully installed."
 
-echo "Installing Docker Compose."
-install_docker_compose
-echo "Docker Compose successfully installed."
+img_pull_sqlserver
+img_build_sqlserver_nonroot
+container_run_sqlserver
+db_setup
+
+# echo "Installing Docker Compose."
+# install_docker_compose
+# echo "Docker Compose successfully installed."
 
 # echo "Resetting the database."
 # reset_database_data
 
-echo "Setting up database."
-init_docker_compose
+# echo "Setting up database."
+# init_docker_compose
+# img_build_sql_nonroot
 
 if ($BUILD_CLIENT_API = true)
     then
@@ -114,6 +157,3 @@ if ($BUILD_CLIENT_API = true)
     else
         echo "User skipped building Client API."
 fi
-
-
-

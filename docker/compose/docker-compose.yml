@@ -1,13 +1,13 @@
 version: '3.3'
 services:
-  mssqldb:
-    container_name: docker-mssql
-    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+  2017-latest:
+    build: .
     restart: always
+    container_name: docker-mssql
     ports:
       - 1433:1433
     volumes:
-      - /mnt/host/mssql_data:/var/opt/mssql/data
+      - sqlvolume:/var/opt/mssql
     environment:
       SA_PASSWORD: D0cker123
       ACCEPT_EULA: Y
