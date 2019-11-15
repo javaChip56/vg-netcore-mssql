@@ -6,9 +6,10 @@ Vagrant.configure("2") do |config|
 
     ################################################################################################
     # Port fowarding rules
-    # Change port 1433 to a different port if you already have MySQL running on your host machine as
+    # Change port 1433 to a different port if you already have SQL Server running on your host machine as
     # this is lkely to cause conflicts.
     ################################################################################################
+    # SQL Server
     netcoremssql_host.vm.network "forwarded_port", guest: 1433, host: 1444
     # Client API
     netcoremssql_host.vm.network "forwarded_port", guest: 8080, host: 8080
