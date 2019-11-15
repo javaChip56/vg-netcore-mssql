@@ -9,6 +9,8 @@ FROM mcr.microsoft.com/mssql/server:2017-latest
 #
 RUN useradd -s /bin/bash -u 10001 -g 0 mssql
 RUN mkdir -p -m 770 /var/opt/mssql && chgrp -R 0 /var/opt/mssql
+# Create create another folder which will hold DB initialization scripts.
+RUN mkdir -p -m 770 /var/opt/mssql-scripts && chgrp -R 0 /var/opt/mssql-scripts
 
 # Grant sql the permissions to connect to ports <1024 as a non-root user
 #
