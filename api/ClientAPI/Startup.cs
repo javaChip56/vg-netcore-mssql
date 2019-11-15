@@ -8,9 +8,15 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
+using HealthChecks.UI.Client;
 
+using ClientAPI.Domain.Queries;
+using ClientAPI.Domain.Queries.Interfaces;
 namespace ClientAPI
 {
     public class Startup
@@ -26,6 +32,24 @@ namespace ClientAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.AddTransient<IClientQueries>(sp => new ClientQueries(Configuration["ConnectionStrings:ClientDB"]));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    Configuration["SwaggerConfig:FriendlyName"] + Configuration["SwaggerConfig:Version"],
+                    new Info { 
+                        Title = Configuration["SwaggerConfig:Title"], 
+                        Version = Configuration["SwaggerConfig:Version"] }
+                        );
+            });
+
+            services.AddHealthChecks()
+                .AddCheck("Client Database", new Diagnostics.HealthChecks.DatabaseConnectionHealthCheck(Configuration["ConnectionStrings:ClientDB"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
