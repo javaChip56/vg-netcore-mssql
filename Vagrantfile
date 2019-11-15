@@ -27,10 +27,11 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    netcoremssql_host.vm.provision "shell", run: "always" do |s|
+    # Add run: "always" argument to force the provisioner to be ran everytime vagrant up is called.
+    netcoremssql_host.vm.provision "shell" do |s|
       s.path = "provision.sh"
-      # Parameters (VAGRANT_HOST_DIR, BUILD_CLIENT_API)
-      s.args = "/mnt/host false"
+      # Parameters (VAGRANT_HOST_DIR, BUILD_CLIENT_API, SQL_PASSWORD)
+      s.args = "/mnt/host false D0cker123"
     end
 
   end

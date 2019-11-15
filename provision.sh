@@ -1,10 +1,11 @@
 #!/bin/bash
 VAGRANT_HOST_DIR=$1
 BUILD_CLIENT_API=$2
+SQL_PASSWORD=$3
 
 echo_parameters()
 {
-    echo "Parameters received from Vagrantfile: $VAGRANT_HOST_DIR $BUILD_CLIENT_API"  
+    echo "Parameters received from Vagrantfile: $VAGRANT_HOST_DIR $BUILD_CLIENT_API $SQL_PASSWORD"  
 }
 
 img_pull_sqlserver()
@@ -27,7 +28,7 @@ img_build_sqlserver_nonroot()
 container_run_sqlserver()
 {
     echo "Running Non-root SQL Server 2017 container."
-    docker run -d -p 1433:1433 -v sqlvolume:/var/opt/mssql -e SA_PASSWORD=D0cker123 -e ACCEPT_EULA=Y --name docker-mssql sqlserver-2017-nonroot &
+    docker run -d --restart unless-stopped -p 1433:1433 -v sqlvolume:/var/opt/mssql -e SA_PASSWORD=D0cker123 -e ACCEPT_EULA=Y --name docker-mssql sqlserver-2017-nonroot &
     wait $!
     sudo usermod -aG docker mssql
 }
@@ -35,14 +36,12 @@ container_run_sqlserver()
 db_setup()
 {
     echo "Setting up Client database."
-    # Create Scripts directory inside the container.
-    docker exec docker-mssql /bin/sh -c 'mkdir /opt/mssql-scripts/' &
     # Copy the DB initialization scripts from host to the container scripts directory.
-    docker cp /mnt/host/db_scripts/db_init.sql docker-mssql:/opt/mssql-scripts/db_init.sql
+    docker cp /mnt/host/db_scripts/db_init.sql docker-mssql:/var/opt/mssql-scripts/db_init.sql
     # Run the DB initilization script.
-    docker exec docker-mssql /bin/sh -c '/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "D0cker123" -i /opt/mssql-scripts/db_init.sql' &
+    docker exec docker-mssql /bin/sh -c '/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '"$SQL_PASSWORD"' -i /var/opt/mssql-scripts/db_init.sql' &
     wait $!
-    echo "Database setup successful!"
+    echo "SQL Server is ready."
 }
 
 reset_database_data()
@@ -85,23 +84,6 @@ install_docker_engine()
     # 
 }
 
-########################
-# Docker Compose
-########################
-install_docker_compose()
-{
-    echo "Pulling Docker Compose from source."
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-}
-
-init_docker_compose()
-{
-    docker rm -f docker-mssql
-    docker-compose rm -v
-    docker-compose -f $VAGRANT_HOST_DIR/docker/compose/docker-compose.yml up -d
-}
-
 build_client_api()
 {
     docker rm -f /docker-client-api
@@ -138,16 +120,8 @@ img_build_sqlserver_nonroot
 container_run_sqlserver
 db_setup
 
-# echo "Installing Docker Compose."
-# install_docker_compose
-# echo "Docker Compose successfully installed."
-
 # echo "Resetting the database."
 # reset_database_data
-
-# echo "Setting up database."
-# init_docker_compose
-# img_build_sql_nonroot
 
 if ($BUILD_CLIENT_API = true)
     then
