@@ -51,27 +51,5 @@ namespace ClientAPI.Domain.Queries
                 return await conn.QueryAsync<Client>(query);
             }
         }
-        public async Task<IEnumerable<ClientAccount>> GetClientAccountsAsync(string clientNo)
-        {
-             using (var conn = new SqlConnection(_connectionString))
-            {
-                conn.Open();
-                string query = @"SELECT CA.* from clientaccount CA";
-
-                if (!string.IsNullOrEmpty(clientNo))
-                {
-                    var parameters = new DynamicParameters();
-                    query += " WHERE CA.clientno=@pClientNo";
-                    parameters.Add("pClientNo", clientNo);
-
-                    return await conn.QueryAsync<ClientAccount>(query, param: parameters);
-                }
-                else
-                {
-                    return await conn.QueryAsync<ClientAccount>(query);
-                }
-
-            }
-        }
     }
 }
