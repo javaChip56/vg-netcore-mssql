@@ -2,19 +2,24 @@
 - This project is a work in progress. It aims to demonstrate basic dotnet core WebAPI hosted on an Ubuntu VM (Bionic).
 - This project loads everything using a Vagrantfile which installs all the pre-requisites.
 
-# Current State:
-- Runs Ubuntu Bionic in Virtualbox provisioned via Vagrant.
-- Installs Docker inside the guest VM. Then pulls and builds the MSSQL database.
-- Sets up the sample databases and tables.
-- Runs 1 containerized .NET Core API called ClientAPI with basic get functions to fetch data from MSSQL database.
-
-# Prerequisites
-These are required to be installed on your development machine in  order to host the MSSQL database and Docker engine in this demo:
+# Optional Installs
+These applications are fully optional to be installed on your development machine.
+These are only required in order to host the MSSQL database and Docker engine used in this demo.
 - Vagrant v2.2.5 from [Vagrant's website](https://www.vagrantup.com/)
 - Virtualbox v6.0.12 from [Oracle Virtualbox Older Builds](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0)
 
+To run this demo without installing the above applications, these are required to be on the developer machines.
+- MSSQL Server. Developer version will do.
+- .Net Core 2.2 Runtime, SDK and Hosting. .Net 3.0 will work as well but requires some changes on the application.
+
+# Current State:
+- Runs Ubuntu Bionic in Virtualbox provisioned via Vagrant.
+- Installs Docker inside the guest VM. Then pulls and builds the MSSQL database.
+- Sets up the sample databases and tables. The database will be exposed to the host machine on port 1444.
+- Runs 1 containerized .NET Core API called ClientAPI with basic get functions to fetch data from MSSQL database.
+
 # Todos
-- Other CRUD functionality.
+- Logging.
 
 # Important Information!
 Vagrant conflicts with Hyper-V
