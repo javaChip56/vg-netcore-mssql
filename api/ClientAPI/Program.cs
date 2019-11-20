@@ -24,9 +24,9 @@ namespace ClientAPI
             WebHost.CreateDefaultBuilder(args)
             .UseKestrel(options => {
                 if (!string.IsNullOrEmpty(_environment) && _environment.ToLower().Equals("development")) {
-                    options.Listen(IPAddress.Loopback, 8080);
+                    options.Listen(IPAddress.Loopback, 8090);
                 } else {
-                    options.Listen(IPAddress.Any, 8080);
+                    options.Listen(IPAddress.Any, 8090);
                 }
             })
             .UseStartup<Startup>();

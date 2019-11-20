@@ -1,9 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientAPI.Domain.Models
 {
+    [Table("Client")]
     public class Client
     {
+        [Key]
         public int Id { get; set; } 
         public string ClientName { get; set; } 
         public string ClientNo { get; set; } 

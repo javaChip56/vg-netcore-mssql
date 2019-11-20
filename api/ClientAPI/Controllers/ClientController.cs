@@ -39,10 +39,28 @@ namespace ClientAPI.Controllers
             return await this._clientQueries.GetAllClientsAsync();
         }
         
-        // [HttpGet]
-        // public async Task<IEnumerable<ClientAccount>> GetClientAccounts(string clientNo)
-        // {
-        //     return await this._clientQueries.GetClientAccountsAsync(clientNo);
-        // }
+        [HttpPost]
+        public async Task<bool> CreateClient(Client client)
+        {
+            return await this._clientQueries.InsertClientAsync(client);
+        }
+     
+        [HttpPost]
+        public async Task<bool> UpdateClient(Client client)
+        {
+            return await this._clientQueries.UpdateClientAsync(client);
+        }
+
+        [HttpPost]
+        public async Task<bool> DeleteClient(int clientId)
+        {
+            return await this._clientQueries.DeleteClientAsync(clientId);
+        }
+
+        [HttpPost]
+        public async Task<bool> DeleteClientByNo(string clientNo)
+        {
+            return await this._clientQueries.DeleteClientByNoAsync(clientNo);
+        }
     }
 }

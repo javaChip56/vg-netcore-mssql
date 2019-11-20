@@ -12,9 +12,9 @@ Vagrant.configure("2") do |config|
     # SQL Server
     netcoremssql_host.vm.network "forwarded_port", guest: 1433, host: 1444
     # Client API
-    netcoremssql_host.vm.network "forwarded_port", guest: 8080, host: 8080
+    netcoremssql_host.vm.network "forwarded_port", guest: 8090, host: 8090
    
-    netcoremssql_host.vm.network "private_network", ip: "192.168.3.34" 
+    netcoremssql_host.vm.network "private_network", ip: "192.168.3.33" 
     
     # Uncomment the line below if the guest OS requires connection to any local / network resource.
     # netcoremssql_host.vm.network "public_network", use_dhcp_assigned_default_route: true
