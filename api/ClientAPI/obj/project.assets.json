@@ -48,6 +48,20 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
+      "Dapper.Contrib/2.0.4": {
+        "type": "package",
+        "dependencies": {
+          "Dapper": "2.0.4",
+          "Microsoft.CSharp": "4.5.0",
+          "System.Reflection.Emit": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Dapper.Contrib.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Dapper.Contrib.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -5048,6 +5062,19 @@
         "dapper.nuspec",
         "lib/netstandard2.0/Dapper.dll",
         "lib/netstandard2.0/Dapper.xml"
+      ]
+    },
+    "Dapper.Contrib/2.0.4": {
+      "sha512": "/07YwNQn1EqYUIfnYr96nH/h0+SNyplsZwJN2KBCKeHPbksOHVaUOnbWE9YGf1lSMOLc+PjrKyvMAU87dpOIVw==",
+      "type": "package",
+      "path": "dapper.contrib/2.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dapper.contrib.2.0.4.nupkg.sha512",
+        "dapper.contrib.nuspec",
+        "lib/netstandard2.0/Dapper.Contrib.dll",
+        "lib/netstandard2.0/Dapper.Contrib.xml"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -13523,6 +13550,7 @@
     ".NETCoreApp,Version=v2.2": [
       "AspNetCore.HealthChecks.UI >= 2.2.35",
       "Dapper >= 2.0.4",
+      "Dapper.Contrib >= 2.0.4",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
@@ -13574,6 +13602,10 @@
             "version": "[2.2.35, )"
           },
           "Dapper": {
+            "target": "Package",
+            "version": "[2.0.4, )"
+          },
+          "Dapper.Contrib": {
             "target": "Package",
             "version": "[2.0.4, )"
           },

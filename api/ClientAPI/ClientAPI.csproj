@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.35" />
     <PackageReference Include="Dapper" Version="2.0.4" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="microsoft.visualstudio.web.codegeneration.design" Version="2.2.3" />

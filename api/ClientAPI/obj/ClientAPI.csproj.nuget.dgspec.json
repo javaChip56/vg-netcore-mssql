@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Research\\vg-netcore-mssql\\api\\ClientAPI\\ClientAPI.csproj": {}
+    "E:\\Research\\vg-netcore-mssql\\api\\clientapi\\ClientAPI.csproj": {}
   },
   "projects": {
-    "E:\\Research\\vg-netcore-mssql\\api\\ClientAPI\\ClientAPI.csproj": {
+    "E:\\Research\\vg-netcore-mssql\\api\\clientapi\\ClientAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Research\\vg-netcore-mssql\\api\\ClientAPI\\ClientAPI.csproj",
+        "projectUniqueName": "E:\\Research\\vg-netcore-mssql\\api\\clientapi\\ClientAPI.csproj",
         "projectName": "ClientAPI",
-        "projectPath": "E:\\Research\\vg-netcore-mssql\\api\\ClientAPI\\ClientAPI.csproj",
+        "projectPath": "E:\\Research\\vg-netcore-mssql\\api\\clientapi\\ClientAPI.csproj",
         "packagesPath": "C:\\Users\\gali\\.nuget\\packages\\",
-        "outputPath": "E:\\Research\\vg-netcore-mssql\\api\\ClientAPI\\obj\\",
+        "outputPath": "E:\\Research\\vg-netcore-mssql\\api\\clientapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -44,6 +44,10 @@
               "version": "[2.2.35, )"
             },
             "Dapper": {
+              "target": "Package",
+              "version": "[2.0.4, )"
+            },
+            "Dapper.Contrib": {
               "target": "Package",
               "version": "[2.0.4, )"
             },
