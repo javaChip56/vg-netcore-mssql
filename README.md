@@ -19,7 +19,7 @@ To run this demo without installing the above applications, these are required t
 - .Net Core 2.2 Runtime, SDK and Hosting. .Net 3.0 will work as well but requires some changes on the application.
 - Run the database create script found in ```%Local_Directory%\vg-netcore-mssql\db_scripts\db_init.sql``` against your Dev SQL Server.
 - Then either change your database password for SA user or change the username and password in the connection string found in ```%Local_Directory%\vg-netcore-mssql\api\ClientAPI\appsettings.Development.json```.
-- In VS Code, got to File menu then select ```Add Folder to Workspace```, then select the vg-netcore-mssql folder.
+- In VS Code, go to File menu then select ```Add Folder to Workspace```, then select the vg-netcore-mssql folder.
 - Once added, click on the Debug icon then hit the play button to run the application.
 
 
