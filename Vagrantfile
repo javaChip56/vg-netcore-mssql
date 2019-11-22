@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
     netcoremssql_host.vm.provision "shell" do |s|
       s.path = "provision.sh"
       # Parameters (VAGRANT_HOST_DIR, BUILD_CLIENT_API, SQL_PASSWORD)
-      s.args = "/mnt/host false D0cker123"
+      s.args = "/mnt/host true D0cker123"
     end
 
   end
