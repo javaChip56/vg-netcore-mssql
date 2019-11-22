@@ -88,7 +88,7 @@ build_client_api()
 {
     docker rm -f /docker-client-api
     docker build $VAGRANT_HOST_DIR/api/clientapi -t img-client-api
-    docker run -d --name docker-client-api -p 8090:8090 img-client-api:latest
+    docker run -d --restart unless-stopped -p 8090:8090 --name docker-client-api img-client-api:latest
 }
 
 ########################
