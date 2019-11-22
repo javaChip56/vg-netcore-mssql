@@ -24,7 +24,7 @@ To run this demo without installing the above applications, these are required t
 
 
 # Verify if the app is running
-- Open a browser and navigate to http://localhost:8090/sweagger. This will bring you to the Swagger UI documentation which will allow you to test the API endpoints.
+- Open a browser and navigate to http://localhost:8090/swagger. This will bring you to the Swagger UI documentation which will allow you to test the API endpoints.
 
 # Current State:
 - Runs Ubuntu Xenial in Virtualbox provisioned via Vagrant.
