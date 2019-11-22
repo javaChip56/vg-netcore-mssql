@@ -33,7 +33,8 @@ To run this demo without installing the above applications, these are required t
 - Runs 1 containerized .NET Core API called ClientAPI with basic get functions to fetch data from MSSQL database.
 
 # Todos
-- Logging.
+- Centralized Logging.
+- Upgrade to dotNetCore 3.0.
 
 # Important Information!
 Vagrant conflicts with Hyper-V
